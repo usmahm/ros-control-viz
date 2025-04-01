@@ -24,6 +24,8 @@
     "@electron-forge/plugin-fuses": "^7.8.0",
     "@electron-forge/plugin-webpack": "^7.8.0",
     "@electron/fuses": "^1.8.0",
+    "@types/css-modules": "^1.0.5",
+    "@types/dagre": "^0.7.52",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
@@ -43,6 +45,8 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
+    "@xyflow/react": "^12.5.2",
+    "dagre": "^0.8.5",
     "electron-squirrel-startup": "^1.0.1",
     "rclnodejs": "^0.32.4",
     "react": "^19.0.0",

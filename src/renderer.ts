@@ -32,11 +32,14 @@ import { ipcRenderer } from 'electron';
 // import './index.css';
 import './app';
 
+// ipcRenderer.on("ros:nodes_details", (_event, value) => {
+//   console.log("HEYY 121212", value);
+// });
 
-ipcRenderer.on('topic-received', function (event, response) {
-  // document.getElementById('received-topic').innerText = response;
-  console.log("HEYYYYY 3333");
-});
+// ipcRenderer.on('topic-received', function (event, response) {
+//   // document.getElementById('received-topic').innerText = response;
+//   console.log("HEYYYYY 3333");
+// });
 
 console.log('👋 This message is being logged by "renderer.js", included via webpack');
 
