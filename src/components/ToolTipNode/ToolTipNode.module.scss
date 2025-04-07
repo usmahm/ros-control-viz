@@ -1,0 +1,27 @@
+.tooltip {
+  border: 0.5px solid;
+  border-radius: 5px;
+  background-color: white;
+  
+  h2 {
+    margin: 2px 0 2px 0;
+    padding: 0;
+    padding-left: 10px;
+    border-bottom: 0.5px solid;
+  }
+  
+  p:not(:last-of-type) {
+    border-bottom: 0.5px solid;
+  }
+  
+  p {
+    padding: 5px 10px;
+    margin: 0;
+  }
+}
+
+.node {
+  padding: 10px 20px;
+  border: 1px solid;
+  border-radius: 5px;
+}

@@ -29,7 +29,7 @@
 // const { ipcRenderer } = require('electron');
 import { ipcRenderer } from 'electron';
 
-// import './index.css';
+import './index.css';
 import './app';
 
 // ipcRenderer.on("ros:nodes_details", (_event, value) => {

@@ -1,58 +1,86 @@
-import rclnodejs from "rclnodejs";
+import rclnodejs, { getActionClientNamesAndTypesByNode, NamesAndTypesQueryResult, Node } from "rclnodejs";
 import { BrowserWindow, ipcMain } from 'electron';
 import { setTimeout } from 'timers/promises';
+import { NODES_DETAILS_TYPE } from "./RosTypes";
+import { clearInterval } from "timers";
+import { getActionServerNamesAndTypesByNode } from "rclnodejs";
+// import { Node } from "rclnodejs";
+
+let gui_node: Node;
+let globalWindow: BrowserWindow;
+let interval: NodeJS.Timeout;
 
 export const setupROS = (window: BrowserWindow) => {
+  globalWindow = window;
   console.log("ENTEREDDD ROS SPACES");
 
+
   rclnodejs.init().then(async () => {
-    // let sender: Electron.WebContents | null = null;
-    
-    const gui_node = new rclnodejs.Node('control_gui');
-    
-    console.log("HEYYY 2222");
+    gui_node = new rclnodejs.Node('control_gui');
+
 
     // [FIX] - see what happens if I don't wait here
     await setTimeout(5000);
 
+    gui_node.spin();
+  });
+}
+
+let pollingStarted = false;
+
+export const fetchROSNodesDetails = () => {
+  let nodePubSubMap: NODES_DETAILS_TYPE = {};
+
+  if (gui_node) {
     const nodeNames = gui_node.getNodeNamesAndNamespaces();
-    let nodePubSubMap = {};
     
     try {
       nodeNames.slice(1).forEach((n) => {
-        console.log("HEYYY", n);
+        // console.log("HEYYY", n);
 
         nodePubSubMap = {
           ...nodePubSubMap,
           [n.name]: {
             publishers: gui_node.getPublisherNamesAndTypesByNode(n.name, n.namespace),
             subscribers: gui_node.getSubscriptionNamesAndTypesByNode(n.name, n.namespace),
+            services: gui_node.getServiceNamesAndTypesByNode(n.name, n.namespace),
+            clients: getActionClientNamesAndTypesByNode(gui_node, n.name, n.namespace),
+            svc: getActionServerNamesAndTypesByNode(gui_node, n.name, n.namespace),
+            // clients: gui_node.get(n.name, n.namespace),
           }
         }
       });
     } catch (err) {
-      console.log("HEYYY222", err)
+      // console.log("HEYYY222", err)
     }
 
-    console.log(nodeNames, JSON.stringify(nodePubSubMap, null, 2));
-    window.webContents.send("ros:nodes_details", nodePubSubMap);
+    // console.log(nodeNames, JSON.stringify(nodePubSubMap, null, 2));
+  }
 
-    // const node = new rclnodejs.Node("publisher_example_node");
+  if (!pollingStarted) {
+    console.log("HEYYY STARTING INTERVAL", pollingStarted)
+    pollingStarted = true;
+    pollGraphChanges();
+  }
+  
+  return nodePubSubMap;
+}
 
-    // node.createSubscription("std_msgs/msg/String", 'topic', (msg) => {
-    //   console.log("HEYYY 4444")
-    //   if (sender) {
-    //     sender.send('topic-received', msg.data);
-    //   }
-    // });
+const pollGraphChanges = () => {
+  let old_dets = fetchROSNodesDetails();
 
-    // const publisher = node.createPublisher('std_msgs/msg/String', 'topic');
+  clearInterval(interval);
+  
+  interval = setInterval(() => {
+    const new_dets = fetchROSNodesDetails();
 
-    ipcMain.on('publish-topic', (event, topic) => {
-      // publisher.publish(topic);
-      // sender = event.sender;
-    });
+    if (hasChanged(old_dets, new_dets)) {
+      globalWindow.webContents.send("ros:nodes_details_updated", new_dets);
+      old_dets = new_dets;
+    }
+  }, 2000);
+}
 
-    gui_node.spin();
-  });
+const hasChanged = (old: any, nnew: any) => {
+  return JSON.stringify(old) !== JSON.stringify(nnew);
 }
