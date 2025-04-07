@@ -5,7 +5,7 @@ export type NODES_DETAILS_TYPE = {
     publishers: NamesAndTypesQueryResult[];
     subscribers: NamesAndTypesQueryResult[];
     services: NamesAndTypesQueryResult[];
-    clients: any;
-    svc: any;
+    clients: NamesAndTypesQueryResult[];
+    // svc: any;
   }
 }

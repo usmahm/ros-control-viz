@@ -44,9 +44,7 @@ export const fetchROSNodesDetails = () => {
             publishers: gui_node.getPublisherNamesAndTypesByNode(n.name, n.namespace),
             subscribers: gui_node.getSubscriptionNamesAndTypesByNode(n.name, n.namespace),
             services: gui_node.getServiceNamesAndTypesByNode(n.name, n.namespace),
-            clients: getActionClientNamesAndTypesByNode(gui_node, n.name, n.namespace),
-            svc: getActionServerNamesAndTypesByNode(gui_node, n.name, n.namespace),
-            // clients: gui_node.get(n.name, n.namespace),
+            clients: gui_node.getClientNamesAndTypesByNode(n.name, n.namespace),
           }
         }
       });
