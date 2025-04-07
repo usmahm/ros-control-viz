@@ -15,18 +15,18 @@ import NodeWithToolbar from "../ToolTipNode/ToolTipNode";
 import EdgeWithLabel from "../EdgeWithLabel/EdgeWithLabel";
 // import { ipcRenderer } from "electron";
 
-type ROSNodesDetails = {
-  [key: string]: {
-    publishers: {
-      name: string;
-      types: string[];
-    }[];
-    subscribers: {
-      name: string;
-      types: string[];
-    }[];
-  }
-}
+// type ROSNodesDetails = {
+//   [key: string]: {
+//     publishers: {
+//       name: string;
+//       types: string[];
+//     }[];
+//     subscribers: {
+//       name: string;
+//       types: string[];
+//     }[];
+//   }
+// }
 
 const node_width = 172;
 const node_height = 36;
@@ -95,13 +95,21 @@ const HomePage = () => {
     const publishers: {
       [pub_name: string]: {
         node: string;
-        publisher: ROSNodesDetails['publishers']['publishers'][0];
+        publisher: NODES_DETAILS_TYPE['publishers']['publishers'][0];
+      }
+    } = {};
+    
+    // services server map to be used to pair a services clients later
+    const services: {
+      [serv_name: string]: {
+        node: string;
+        service: NODES_DETAILS_TYPE['services']['services'][0];
       }
     } = {};
 
     // First loop to populate the nodes_map and pulishers first
     Object.entries(nodes_details).forEach((val, i) => {
-      const [node_name, n_dets] = val as [string, ROSNodesDetails[string]];
+      const [node_name, n_dets] = val as [string, NODES_DETAILS_TYPE[string]];
 
       nodes_map[node_name] = {
         id: i.toString(),
@@ -112,6 +120,8 @@ const HomePage = () => {
           node_details: {
             publishers: n_dets.publishers,
             subscribers: n_dets.subscribers,
+            clients: n_dets.clients,
+            services: n_dets.services,
           }
         }
       };
@@ -123,6 +133,15 @@ const HomePage = () => {
             publisher: n_det,
           };
         }
+      });
+
+      n_dets.services.forEach((n_det) => {
+        if (!(n_det.name in IGNORED_TOPICS)) {
+          services[n_det.name] = {
+            node: node_name,
+            service: n_det,
+          };
+        }
       })
     })
 
@@ -130,7 +149,7 @@ const HomePage = () => {
 
     // 2nd map to populate the parsed_edges, by pairing with the publishers as the source
     Object.entries(nodes_details).forEach((val) => {
-      const [node_name, n_dets] = val as [string, ROSNodesDetails[string]];
+      const [node_name, n_dets] = val as [string, NODES_DETAILS_TYPE[string]];
 
       n_dets.subscribers.forEach((sub) => {
         if (node_name in nodes_map && sub.name in publishers) {
@@ -151,7 +170,28 @@ const HomePage = () => {
             }
           })
         }
-      })
+      });
+
+      n_dets.clients.forEach((sub) => {
+        if (node_name in nodes_map && sub.name in services) {
+          const source = nodes_map[services[sub.name].node].id;
+
+          parsed_edges.push({
+            source,
+            target: nodes_map[node_name].id,
+            id: `${services[sub.name].node}-${node_name}-${sub.name}`,
+            type: 'with-label',
+            markerEnd: {
+              type: MarkerType.Arrow,
+              width: 20,
+              height: 20,
+            },
+            data: {
+              label: `${sub.name}: ${sub.types[0]}`,
+            }
+          })
+        }
+      });
     });
 
     const { layouted_nodes } = getLayoutedElements(Object.values(nodes_map), parsed_edges)
