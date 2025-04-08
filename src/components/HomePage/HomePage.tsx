@@ -28,9 +28,14 @@ const HomePage = () => {
   
   return (
     <div className={styles.container}>
-      <button
-        onClick={fetchNRenderNodesDetails}
-      >Refresh</button>
+      <header>
+        <h1>ROS Control Viz</h1>
+        <button
+          onClick={fetchNRenderNodesDetails}
+        >
+          Refresh
+        </button>
+      </header>
 
       <GraphRender
         nodesDetails={nodesDetails}

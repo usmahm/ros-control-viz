@@ -29,24 +29,36 @@ const NodeWithToolbar = memo(({ data, id }: NodeProps<MyNodeData>) => {
             className={styles.tooltip}
           >
             <h2>Published Topics: types</h2>
-            {data?.node_details?.publishers?.map((pub) => (
+            {data?.node_details?.publishers?.length ?
+              data?.node_details?.publishers?.map((pub) => (
               <p key={pub.name}>{pub.name}: {pub.types[0]}</p>
-            ))}
-            
+            )): (
+              <p key={"none"}>None</p>
+            )}
+
             <h2>Subscribed Topics: types</h2>
-            {data?.node_details?.subscribers?.map((pub) => (
+            {data?.node_details?.subscribers?.length ?
+              data?.node_details?.subscribers?.map((pub) => (
               <p key={pub.name}>{pub.name}: {pub.types[0]}</p>
-            ))}
+            )): (
+              <p key={"none"}>None</p>
+            )}
             
             <h2>Service Servers: types</h2>
-            {data?.node_details?.services?.map((pub) => (
+            {data?.node_details?.services?.length ?
+              data?.node_details?.services?.map((pub) => (
               <p key={pub.name}>{pub.name}: {pub.types[0]}</p>
-            ))}
+            )): (
+              <p key={"none"}>None</p>
+            )}
             
             <h2>Service Clients: types</h2>
-            {data?.node_details?.clients?.map((pub) => (
+            {data?.node_details?.clients?.length ?
+              data?.node_details?.publishers?.map((pub) => (
               <p key={pub.name}>{pub.name}: {pub.types[0]}</p>
-            ))}
+            )): (
+              <p key={"none"}>None</p>
+            )}
           </div>
         </NodeToolbar>
         
