@@ -13,6 +13,17 @@ This repository demonstrates an **Electron + React + TypeScript** application th
 
 ---
 
+## Technologies Used
+
+- **Electron:** Creates a desktop application from a Node.js + Chromium environment.  
+- **React:** Manages the UI and state for the graph.  
+- **TypeScript:** Ensures type safety across the codebase.  
+- **XYFlow:** Provides graph building and rendering components.  
+- **Dagre:** Automatically arranges the graph layout.  
+- **rclnodejs:** Facilitates ROS 2 communication in the Node.js (main) process.
+
+---
+
 ## Installation & Setup
 
 ### Prerequisites
@@ -55,5 +66,5 @@ This launches an Electron window, which requests node details (publishers, subsc
 - `GraphRender.tsx` uses XYFlow to build a node/edge graph, with Dagre handling automatic layout.
 
 - Each node displays metadata (e.g., name, publishers, subscribers, etc.).
-- 
+
 ---
