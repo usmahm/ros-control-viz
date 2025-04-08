@@ -36,6 +36,7 @@ const EdgeWithLabel: React.FC<EdgeProps<Edge<{ label: string }>>> = ({
         <div
           style={{
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            color: props?.style?.stroke,
           }}
           className={`${styles.label} nodrag nopan`}
         >

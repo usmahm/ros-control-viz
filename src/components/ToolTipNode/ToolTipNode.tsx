@@ -8,16 +8,6 @@ import { NODES_DETAILS_TYPE } from "../../RosTypes";
  
 type MyNodeData = Node<{
   label: string;
-  // node_details: {
-  //   publishers: {
-  //     name: string;
-  //     types: string[];
-  //   }[];
-  //   subscribers: {
-  //     name: string;
-  //     types: string[];
-  //   }[];
-  // };
   node_details: NODES_DETAILS_TYPE[string];
 }>;
 
