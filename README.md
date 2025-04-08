@@ -1,5 +1,7 @@
 # ROS 2 Control Ecosystem Visualization
 
+![Screenshot from 2025-04-08 16-36-35](https://github.com/user-attachments/assets/c83222bd-0af9-45ee-9be7-2876ac287ff6)
+
 This repository demonstrates an **Electron + React + TypeScript** application that displays a simple Directed Acyclic Graph (DAG) representing ROS 2 node interactions such as publishers, subscribers, and services. It fulfills the **visualization portion** of a qualification task by showcasing how to render a graph of ROS 2 relationships in real time.
 
 ---
@@ -50,6 +52,8 @@ This launches an Electron window, which requests node details (publishers, subsc
 ---
 
 ## How It Works
+
+![flowpng](https://github.com/user-attachments/assets/2cb9268a-cabd-4988-9175-dcc63f0b9c63)
 
 ### Electron + rclnodejs (Main Process)
 
