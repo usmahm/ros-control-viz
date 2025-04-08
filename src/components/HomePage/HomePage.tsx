@@ -29,7 +29,7 @@ const HomePage = () => {
   return (
     <div className={styles.container}>
       <header>
-        <h1>ROS Control Viz</h1>
+        <h1>ROS CONTROL VIZ</h1>
         <button
           onClick={fetchNRenderNodesDetails}
         >

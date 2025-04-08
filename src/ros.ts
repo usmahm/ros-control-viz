@@ -96,23 +96,23 @@ const trackUpdates = (nodes_details: NODES_DETAILS_TYPE) => {
         console.log("HEYY Adding subs: ", sub)
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const new_sub: Subscription = gui_node.createSubscription(parsed_publishers[sub], sub, (msg) => {
-          try {
-            console.log(`Received message: ${typeof msg}`, msg);
+        // const new_sub: Subscription = gui_node.createSubscription(parsed_publishers[sub], sub, (msg) => {
+        //   try {
+        //     console.log(`Received message: ${typeof msg}`, msg);
     
-            globalWindow.webContents.send(
-              "ros:subscription_msg_received",
-              {
-                topic: sub,
-                msg,
-              }
-            );  
-          } catch (err) {
-            console.log("HEYYY err", err)
-          }
-        });
+        //     globalWindow.webContents.send(
+        //       "ros:subscription_msg_received",
+        //       {
+        //         topic: sub,
+        //         msg,
+        //       }
+        //     );  
+        //   } catch (err) {
+        //     console.log("HEYYY err", err)
+        //   }
+        // });
   
-        prev_parsed_subs[sub] = new_sub;
+        // prev_parsed_subs[sub] = new_sub;
       }
     });
   
@@ -150,8 +150,7 @@ export const fetchROSNodesDetails = () => {
     const nodeNames = gui_node.getNodeNamesAndNamespaces();
     
     try {
-      nodeNames.slice(1).forEach((n) => {
-        // console.log("HEYYY", n);
+      nodeNames.forEach((n) => {
 
         nodePubSubMap = {
           ...nodePubSubMap,
@@ -166,8 +165,6 @@ export const fetchROSNodesDetails = () => {
     } catch (err) {
       // console.log("HEYYY222", err)
     }
-
-    // console.log(nodeNames, JSON.stringify(nodePubSubMap, null, 2));
   }
 
   if (!pollingStarted) {
